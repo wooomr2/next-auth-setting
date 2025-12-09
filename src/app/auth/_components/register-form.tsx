@@ -1,6 +1,6 @@
 'use client'
 
-import { login } from '@/actions/auth-action'
+import { register } from '@/actions/auth-action'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -39,7 +39,7 @@ export const RegisterForm = () => {
     setSuccess('')
 
     startTransition(() => {
-      login(values).then((data) => {
+      register(values).then((data) => {
         setError(data.error)
         setSuccess(data.success)
       })
