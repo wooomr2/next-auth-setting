@@ -32,12 +32,12 @@ export const login = async (
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     })
   } catch (err) {
+    console.error('[auth-action.login]:', err)
     if (err instanceof AuthError) {
       switch (err.type) {
         case 'CredentialsSignin':
           return { success: false, message: 'CredentialsSignin' }
         default:
-          console.error('Authentication error:', err)
           return { success: false, message: 'Authentication error' }
       }
     }

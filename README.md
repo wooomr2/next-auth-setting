@@ -9,6 +9,9 @@ npx prisma migrate dev --name init
 
 npx prisma generate
 npx prisma db push
+
+<!-- reset -->
+npx prisma migrate reset
 ```
 
 <!-- random secret key 생성 -->
