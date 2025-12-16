@@ -1,34 +1,68 @@
 'use server'
 
+import { signIn } from '@/auth'
 import { db } from '@/db/db'
+import * as authRepository from '@/db/repository/auth.repository'
+import { DEFAULT_LOGIN_REDIRECT } from '@/route'
 import { LoginSchema, RegisterSchema } from '@/schemas'
 import bcrypt from 'bcrypt'
+import { AuthError } from 'next-auth'
 import z from 'zod'
 
-export const login = async (values: z.infer<typeof LoginSchema>) => {
-  const validatedFields = LoginSchema.safeParse(values)
-  if (!validatedFields.success) {
-    return { error: 'Invalid fields' }
-  }
-
-  return { success: 'Email sent' }
+type ApiRsponse<T = void> = {
+  success: boolean
+  message?: string
+  data?: T
 }
 
-export const register = async (values: z.infer<typeof RegisterSchema>) => {
+export const login = async (
+  values: z.infer<typeof LoginSchema>
+): Promise<ApiRsponse> => {
+  const validatedFields = LoginSchema.safeParse(values)
+  if (!validatedFields.success) {
+    return { success: false, message: 'Invalid fields' }
+  }
+
+  const { email, password } = validatedFields.data
+
+  try {
+    await signIn('credentials', {
+      email: email,
+      password: password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+    })
+  } catch (err) {
+    if (err instanceof AuthError) {
+      switch (err.type) {
+        case 'CredentialsSignin':
+          return { success: false, message: 'CredentialsSignin' }
+        default:
+          console.error('Authentication error:', err)
+          return { success: false, message: 'Authentication error' }
+      }
+    }
+
+    throw err
+  }
+
+  return { success: true, message: 'Email sent' }
+}
+
+export const register = async (
+  values: z.infer<typeof RegisterSchema>
+): Promise<ApiRsponse> => {
   const validatedFields = RegisterSchema.safeParse(values)
   if (!validatedFields.success) {
-    return { error: 'Invalid fields' }
+    return { success: false, message: 'Invalid fields' }
   }
 
   const { email, password, name } = validatedFields.data
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  const existingUser = await db.user.findUnique({
-    where: { email },
-  })
+  const existingUser = await authRepository.getUserByEmail(email)
 
   if (existingUser) {
-    return { error: 'User already exists' }
+    return { success: false, message: 'User already exists' }
   }
 
   await db.user.create({
@@ -41,5 +75,9 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   // TODO:: Send verification token email
 
-  return { success: 'User created' }
+  return { success: true, message: 'User created successfully' }
+}
+
+export const getUserByEmail = async (email: string) => {
+  return await authRepository.getUserByEmail(email)
 }
