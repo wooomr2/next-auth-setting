@@ -1,6 +1,6 @@
 'use server'
 
-import { signIn } from '@/auth'
+import { signIn, signOut } from '@/auth'
 import { db } from '@/db/db'
 import * as authRepository from '@/db/repository/auth.repository'
 import * as verificationTokenRepository from '@/db/repository/verification-token.repository'
@@ -36,7 +36,11 @@ export const login = async (
     if (!existingUser.emailVerified) {
       await verificationTokenRepository.generateToken(existingUser.email)
 
-      return { success: true, message: '인증 이메일을 발송하였습니다.' }
+      return {
+        success: true,
+        message:
+          '인증 이메일을 발송하였습니다.(TODO:: 이메일 인증 SMTP 설정 후 작업)',
+      }
     }
 
     await signIn('credentials', {
@@ -86,12 +90,18 @@ export const register = async (
       name: name,
       email: email,
       password: hashedPassword,
+      // TODO:: 이메일 인증 작업 완성 후 삭제
+      emailVerified: new Date(),
     },
   })
 
   await verificationTokenRepository.generateToken(email)
 
   return { success: true, message: 'comfirmation email sent' }
+}
+
+export const logout = async () => {
+  await signOut()
 }
 
 export const getUserByEmail = async (email: string) => {

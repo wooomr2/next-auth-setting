@@ -21,7 +21,7 @@ export const AuthCardWrapper = ({
   showSocial = true,
 }: CardWrapperProps) => {
   return (
-    <Card className="w-[400px] shadow-md">
+    <Card className="w-100 shadow-md">
       <CardHeader>
         <Header label={headerLabel || ''} />
       </CardHeader>
