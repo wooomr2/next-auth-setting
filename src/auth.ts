@@ -20,15 +20,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   callbacks: {
-    async signIn({ user }) {
+    async signIn({ user, account }) {
       if (!user.id) {
         return false
       }
 
-      // const existingUser = await getUserById(user.id)
-      // if (!existingUser || !existingUser.emailVerified) {
-      //   return false
-      // }
+      // prevent signIn if email is not verified for credentials provider
+      if (account?.provider === 'credentials') {
+        const exsistingUser = await getUserById(user.id)
+        if (!exsistingUser || !exsistingUser.emailVerified) {
+          return false
+        }
+
+        // TODO:: Add 2FA chek login
+      }
 
       return true
     },

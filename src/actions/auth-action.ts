@@ -3,6 +3,7 @@
 import { signIn } from '@/auth'
 import { db } from '@/db/db'
 import * as authRepository from '@/db/repository/auth.repository'
+import * as verificationTokenRepository from '@/db/repository/verification-token.repository'
 import { DEFAULT_LOGIN_REDIRECT } from '@/route'
 import { LoginSchema, RegisterSchema } from '@/schemas'
 import bcrypt from 'bcrypt'
@@ -26,6 +27,18 @@ export const login = async (
   const { email, password } = validatedFields.data
 
   try {
+    const existingUser = await authRepository.getUserByEmail(email)
+
+    if (!existingUser || !existingUser.email || !existingUser.password) {
+      return { success: false, message: '유저를 찾을 수 없습니다.' }
+    }
+
+    if (!existingUser.emailVerified) {
+      await verificationTokenRepository.generateToken(existingUser.email)
+
+      return { success: true, message: '인증 이메일을 발송하였습니다.' }
+    }
+
     await signIn('credentials', {
       email: email,
       password: password,
@@ -76,9 +89,9 @@ export const register = async (
     },
   })
 
-  // TODO:: Send verification token email
+  await verificationTokenRepository.generateToken(email)
 
-  return { success: true, message: 'User created successfully' }
+  return { success: true, message: 'comfirmation email sent' }
 }
 
 export const getUserByEmail = async (email: string) => {

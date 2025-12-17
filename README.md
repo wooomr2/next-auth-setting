@@ -12,8 +12,13 @@ npx prisma db push
 
 <!-- reset -->
 npx prisma migrate reset
+
+<!-- db studio-->
+npx prisma studio
 ```
 
 <!-- random secret key 생성 -->
 
 npx auth secret
+
+<!-- 4:13:34 -->
