@@ -13,14 +13,21 @@ import {
 import { Input } from '@/components/ui/input'
 import { LoginSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearchParams } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
-import { CardWrapper } from './card-wrapper'
+import { AuthCardWrapper } from './auth-card-wrapper'
 import { FormError } from './form-error'
 import { FormSuccess } from './form-success'
 
 export const LoginForm = () => {
+  const searchParams = useSearchParams()
+  const urlError =
+    searchParams.get('error') === 'OAuthAccountNotLinked'
+      ? 'Email already linked with different provider'
+      : ''
+
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
@@ -49,7 +56,7 @@ export const LoginForm = () => {
   }
 
   return (
-    <CardWrapper
+    <AuthCardWrapper
       headerLabel="로그인"
       backButtonLabel="계정이 없으신가요?"
       backButtonHref="/auth/register"
@@ -96,12 +103,12 @@ export const LoginForm = () => {
             />
           </div>
           <FormSuccess message={success} />
-          <FormError message={error} />
+          <FormError message={error || urlError} />
           <Button type="submit" size="lg" className="w-full">
             Login
           </Button>
         </form>
       </Form>
-    </CardWrapper>
+    </AuthCardWrapper>
   )
 }

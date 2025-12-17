@@ -36,9 +36,12 @@ export const login = async (
     if (err instanceof AuthError) {
       switch (err.type) {
         case 'CredentialsSignin':
-          return { success: false, message: 'CredentialsSignin' }
+          return {
+            success: false,
+            message: '이메일 또는 비밀번호가 유효하지 않습니다.',
+          }
         default:
-          return { success: false, message: 'Authentication error' }
+          return { success: false, message: '인증 오류!!' }
       }
     }
 

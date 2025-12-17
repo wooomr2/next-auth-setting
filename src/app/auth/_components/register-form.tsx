@@ -16,7 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
-import { CardWrapper } from './card-wrapper'
+import { AuthCardWrapper } from './auth-card-wrapper'
 import { FormError } from './form-error'
 import { FormSuccess } from './form-success'
 
@@ -50,7 +50,7 @@ export const RegisterForm = () => {
   }
 
   return (
-    <CardWrapper
+    <AuthCardWrapper
       headerLabel="회원가입"
       backButtonLabel="이미 가입된 계정이 있으신가요?"
       backButtonHref="/auth/login"
@@ -117,6 +117,6 @@ export const RegisterForm = () => {
           </Button>
         </form>
       </Form>
-    </CardWrapper>
+    </AuthCardWrapper>
   )
 }
