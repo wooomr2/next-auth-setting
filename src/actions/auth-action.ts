@@ -4,7 +4,11 @@ import { signIn, signOut } from '@/auth'
 import { db } from '@/db/db'
 import * as authRepository from '@/db/repository/auth.repository'
 import * as verificationTokenRepository from '@/db/repository/verification-token.repository'
-import { DEFAULT_LOGIN_SUCCESS_REDIRECT } from '@/route'
+import { UserRole } from '@/generated/prisma/enums'
+import {
+  DEFAULT_ADMIN_LOGIN_SUCCESS_REDIRECT,
+  DEFAULT_LOGIN_SUCCESS_REDIRECT,
+} from '@/route'
 import { LoginSchema, RegisterSchema } from '@/schemas'
 import bcrypt from 'bcrypt'
 import { AuthError } from 'next-auth'
@@ -41,7 +45,10 @@ export const login = async (
     await signIn('credentials', {
       email: email,
       password: password,
-      redirectTo: DEFAULT_LOGIN_SUCCESS_REDIRECT,
+      redirectTo:
+        existingUser.role === UserRole.ADMIN
+          ? DEFAULT_ADMIN_LOGIN_SUCCESS_REDIRECT
+          : DEFAULT_LOGIN_SUCCESS_REDIRECT,
     })
   } catch (err) {
     console.error('[auth-action.login]:', err)

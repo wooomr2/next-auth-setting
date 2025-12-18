@@ -16,9 +16,14 @@ export const AUTH_ROUTES = [LOGIN_ROUTES, '/auth/register', '/auth/error']
 export const API_AUTH_PREFIX = '/api/auth'
 
 /**
- * ADMIN 권한이 필요한 경로 prefix
+ * ADMIN 권한이 필요한 경로
  */
 export const ADMIN_ROUTES_PREFIX = ['/admin', '/api/admin']
+
+/**
+ * 로그인 성공 시 기본 리다이렉트 경로
+ */
+export const DEFAULT_ADMIN_LOGIN_SUCCESS_REDIRECT = '/admin'
 
 /**
  * 로그인 성공 시 기본 리다이렉트 경로
