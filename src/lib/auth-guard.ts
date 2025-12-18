@@ -24,6 +24,19 @@ export async function hasRole(role: UserRole): Promise<boolean> {
 }
 
 /**
+ * ADMIN 권한이 있는지 확인합니다.
+ * @throws ADMIN이 아닌 경우 에러 페이지로 리다이렉트
+ */
+export async function requireAdmin() {
+  const session = await requireAuth()
+
+  if (session.user.role !== UserRole.ADMIN) {
+    redirect(UNAUTHORIZED_REDIRECT)
+  }
+  return session.user
+}
+
+/**
  * 특정 역할을 요구합니다.
  * @throws 해당 역할이 아닌 경우 에러 페이지로 리다이렉트
  */

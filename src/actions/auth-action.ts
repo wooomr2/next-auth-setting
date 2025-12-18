@@ -29,7 +29,10 @@ export const login = async (
     const existingUser = await authRepository.getUserByEmail(email)
 
     if (!existingUser || !existingUser.email || !existingUser.password) {
-      return { success: false, message: '유저를 찾을 수 없습니다.' }
+      return {
+        success: false,
+        message: '이메일 또는 패스워드가 유효하지 않습니다.',
+      }
     }
 
     if (!existingUser.emailVerified) {
