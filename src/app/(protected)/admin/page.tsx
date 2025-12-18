@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/lib/auth-guard'
+import { requireAdmin } from '@/auth-guard'
 import { FormSuccess } from '@/app/auth/_components/form-success'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { AdminTestButtons } from './_components/admin-test-buttons'
