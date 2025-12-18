@@ -23,12 +23,12 @@ export const ADMIN_ROUTES_PREFIX = ['/admin', '/api/admin']
 /**
  * 로그인 성공 시 기본 리다이렉트 경로
  */
-export const DEFAULT_ADMIN_LOGIN_SUCCESS_REDIRECT = '/admin'
+export const DEFAULT_ADMIN_LOGIN_SUCCESS_REDIRECT = '/admin/dashboard'
 
 /**
  * 로그인 성공 시 기본 리다이렉트 경로
  */
-export const DEFAULT_LOGIN_SUCCESS_REDIRECT = '/settings'
+export const DEFAULT_LOGIN_SUCCESS_REDIRECT = '/'
 
 /**
  * 권한 부족 시 리다이렉트 경로

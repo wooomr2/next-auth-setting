@@ -5,8 +5,7 @@ export default async function AdminLayout({
 }>) {
   return (
     <>
-      <nav>This is auth Navbar</nav>
-      <div className="h-full flex items-center justify-center">{children}</div>
+      {children}
     </>
   )
 }
