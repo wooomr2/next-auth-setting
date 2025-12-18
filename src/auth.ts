@@ -3,11 +3,12 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import NextAuth from 'next-auth'
 import { db } from './db/db'
 import { getUserById } from './db/repository/auth.repository'
+import { LOGIN_ROUTES, UNAUTHORIZED_REDIRECT } from './route'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
-    signIn: '/auth/login',
-    error: '/auth/error',
+    signIn: LOGIN_ROUTES,
+    error: UNAUTHORIZED_REDIRECT,
   },
   events: {
     async linkAccount({ user }) {

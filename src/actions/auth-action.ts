@@ -1,25 +1,15 @@
 'use server'
 
-import { auth, signIn, signOut } from '@/auth'
+import { signIn, signOut } from '@/auth'
 import { db } from '@/db/db'
 import * as authRepository from '@/db/repository/auth.repository'
 import * as verificationTokenRepository from '@/db/repository/verification-token.repository'
-import { DEFAULT_LOGIN_REDIRECT } from '@/route'
+import { DEFAULT_LOGIN_SUCCESS_REDIRECT } from '@/route'
 import { LoginSchema, RegisterSchema } from '@/schemas'
 import bcrypt from 'bcrypt'
 import { AuthError } from 'next-auth'
 import z from 'zod'
 import { ApiResponse } from './type'
-
-export const currentUser = async () => {
-  const session = await auth()
-  return session?.user
-}
-
-export const currentRole = async () => {
-  const session = await auth()
-  return session?.user?.role
-}
 
 export const login = async (
   values: z.infer<typeof LoginSchema>
@@ -51,7 +41,7 @@ export const login = async (
     await signIn('credentials', {
       email: email,
       password: password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: DEFAULT_LOGIN_SUCCESS_REDIRECT,
     })
   } catch (err) {
     console.error('[auth-action.login]:', err)
