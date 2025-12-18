@@ -10,7 +10,7 @@ import { useCurrentUser } from '@/hooks/use-currnet-user'
 import { DropdownMenuContent } from '@radix-ui/react-dropdown-menu'
 import { ExitIcon } from '@radix-ui/react-icons'
 import { FaUser } from 'react-icons/fa'
-import { LogoutButton } from './logout-button'
+import { LogoutButton } from '../../auth/_components/logout-button'
 
 export const UserButton = () => {
   const user = useCurrentUser()
@@ -19,7 +19,7 @@ export const UserButton = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage src={user?.image || ''} />
+          <AvatarImage src={user?.image || undefined} />
           <AvatarFallback className="bg-blue-500">
             <FaUser className="text-white" />
           </AvatarFallback>

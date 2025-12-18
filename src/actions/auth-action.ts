@@ -1,6 +1,6 @@
 'use server'
 
-import { signIn, signOut } from '@/auth'
+import { auth, signIn, signOut } from '@/auth'
 import { db } from '@/db/db'
 import * as authRepository from '@/db/repository/auth.repository'
 import * as verificationTokenRepository from '@/db/repository/verification-token.repository'
@@ -9,16 +9,21 @@ import { LoginSchema, RegisterSchema } from '@/schemas'
 import bcrypt from 'bcrypt'
 import { AuthError } from 'next-auth'
 import z from 'zod'
+import { ApiResponse } from './type'
 
-type ApiRsponse<T = void> = {
-  success: boolean
-  message?: string
-  data?: T
+export const currentUser = async () => {
+  const session = await auth()
+  return session?.user
+}
+
+export const currentRole = async () => {
+  const session = await auth()
+  return session?.user?.role
 }
 
 export const login = async (
   values: z.infer<typeof LoginSchema>
-): Promise<ApiRsponse> => {
+): Promise<ApiResponse> => {
   const validatedFields = LoginSchema.safeParse(values)
   if (!validatedFields.success) {
     return { success: false, message: 'Invalid fields' }
@@ -70,7 +75,7 @@ export const login = async (
 
 export const register = async (
   values: z.infer<typeof RegisterSchema>
-): Promise<ApiRsponse> => {
+): Promise<ApiResponse> => {
   const validatedFields = RegisterSchema.safeParse(values)
   if (!validatedFields.success) {
     return { success: false, message: 'Invalid fields' }

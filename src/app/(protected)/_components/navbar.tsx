@@ -1,6 +1,6 @@
 'use client'
 
-import { UserButton } from '@/app/auth/_components/user-button'
+import { UserButton } from '@/app/(protected)/_components/user-button'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -16,20 +16,6 @@ export const Navbar = () => {
           variant={pathname === '/settings' ? 'default' : 'outline'}
         >
           <Link href={'/settings'}>settings</Link>
-        </Button>
-
-        <Button
-          asChild
-          variant={pathname === '/server' ? 'default' : 'outline'}
-        >
-          <Link href={'/server'}>server</Link>
-        </Button>
-
-        <Button
-          asChild
-          variant={pathname === '/client' ? 'default' : 'outline'}
-        >
-          <Link href={'/client'}>client</Link>
         </Button>
 
         <Button asChild variant={pathname === '/admin' ? 'default' : 'outline'}>
